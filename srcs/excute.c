@@ -1,82 +1,81 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   excute.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/21 23:41:20 by eunrlee           #+#    #+#             */
+/*   Updated: 2023/01/22 16:40:45 by eunrlee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
-/*
-int	set_heredoc()
-{
-	///tmp/.heredoc open 후 한줄씩 받아서 저장
-	//limiter가 나오면 종료
-	//새로 열어서 infile에 담기
-	//infile return
-}
-*/
-char	*get_cmd(char *path, char *cmd)//path를 env안에서 가져와야함
-{
-	char	**path2;
-	char	*path_cmd;
-	char	*ret_cmd;
-	int		i;
 
-	i = -1;
-	path2 = ft_split(path, ':');
-	if (access(cmd, X_OK) != -1)
-		return (cmd);
-	path_cmd = ft_strjoin("/", cmd);
-	while (path2[++i])
+int	wait_all(t_line *line, pid_t last_pid)
+{
+	int		temp;
+	int		status;
+	pid_t	pid;
+
+	pid = 1;
+	while (pid != -1)
 	{
-		ret_cmd = ft_strjoin(path2[i], path_cmd);
-		if (access(ret_cmd, X_OK) != -1)
-		{
-			free(path_cmd);
-			return (ret_cmd);
-		}
-		free(ret_cmd);
+		pid = wait(&temp);
+		if (pid == last_pid)
+			line->status = temp;
 	}
-	free(path_cmd);
-	return (0);
+	return (status >> 8);
 }
 
-void	excute(char *line, char **envp) // 명령어 실행 infile, outfile 등 체크 후 있으면 처음과 마지막에 처리해줌
+char	**get_path(char **env)
 {
-	char	*cmd1;
-	char	**cmd2;
+	while (*env)
+	{
+		if (ft_strncmp(env, "PATH", 4))
+			break ;
+		env++;
+	}
+	if (!env)
+		return (0);
+	return (ft_split(env + 5, ':'));
+}
 
-	// 중간에 dup2(arg.fd[1], 1);
-	// oufile 일때 dup2(outfile, 1);
-	// if (infile && 처음)
-	// open 또는 heredoc처리
-	// dup2(infile, 0);
-	// if (oufile && 마지막)
-	// dup2(outfile, 1);
-	// if (중간)
-	// dup2(arg.fd[0], 0);
-	// dup2(arg.fd[1], 1);
-	cmd2 = ft_split(line, ' ');
-	cmd1 = get_cmd(getenv("PATH") ,cmd2[0]);
-	if (!cmd1)
-		print_error("command not found", 1);
-	if (execve(cmd1, cmd2, envp) == -1)
+void	excute(t_line *line)
+{
+	char	*cmd_arg;
+	char	*cmd
+
+	cmd_arg = get_cmd_arg(line);
+	cmd = get_cmd(get_path(line->env) ,cmd_arg[0]);
+	if (!cmd)
+		print_error("command not found", 127);
+	if (execve(cmd, cmd_arg, line->env) == -1)
 		print_error("execve error", 1);
 }
 
-void	set_excute(char *line, char **envp)
+void	set_excute(t_line *line)
 {
 	pid_t	pid;
-	static int		status;
+	int		fd[2];
+	int		i;
 
-	if (!builtins_check(line, status))
+	i = -1;
+	while (++i < line->size && line->cmd)
 	{
-		//파이프 개수만큼 반복 마지막에 리다이렉션 후 출력
-		//i = -1;
-		//while (++i < pipe_size)
-		//pipe(arg.fd) == -1
-		//print_error("pipe error", 1);
+		if (pipe(fd) == -1)
+			print_error("pipe error", 1);
 		pid = fork();
-		// pid == -1
-		// print_error("fork error", 1);
+		if (pid == -1)
+			print_error("fork error", 1);
 		if (pid == 0)
 		{
-			excute(line, envp);
+			get_io(line, fd, i);
+			excute(line);
 		}
-		// wait_all을 통해 종료 종료시 마지막 status를 받음
-		wait(&status);
+		close(fd[0]);
+		close(fd[1]);
+		line->cmd = line->cmd->next;
 	}
+	wait_all(pid);
 }

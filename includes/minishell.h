@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 20:11:36 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/21 02:53:20 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/21 18:43:02 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@
 # include <fcntl.h>
 # include <termios.h>
 # include "libft.h"
-
+# include "structure.h"
 
 typedef struct s_arg
 {

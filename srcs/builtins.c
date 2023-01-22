@@ -60,7 +60,5 @@ int	builtins_check(char *line, int status) // 체크후 아닐시 리턴 0
 		return (exit_shell(1));
 	if (!ft_strncmp(line, "env", 3))
 		return (display_env(line));
-	if (!ft_strncmp(line, "$?", 2))
-		return (print_exit(status));
 	return (0);
 }
