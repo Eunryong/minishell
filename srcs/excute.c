@@ -44,7 +44,7 @@ char	**get_path(char **env)
 void	excute(t_line *line)
 {
 	char	*cmd_arg;
-	char	*cmd
+	char	*cmd;
 
 	cmd_arg = get_cmd_arg(line);
 	cmd = get_cmd(get_path(line->env) ,cmd_arg[0]);
@@ -63,7 +63,7 @@ void	set_excute(t_line *line)
 	i = -1;
 	while (++i < line->size && line->cmd)
 	{
-		if (pipe(fd) == -1)
+		if (pipe(fd) < -1)
 			print_error("pipe error", 1);
 		pid = fork();
 		if (pid == -1)
@@ -77,5 +77,5 @@ void	set_excute(t_line *line)
 		close(fd[1]);
 		line->cmd = line->cmd->next;
 	}
-	wait_all(pid);
+	wait_all(pid, line);
 }

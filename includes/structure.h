@@ -5,8 +5,15 @@ typedef enum e_type
 {
 	cmd,
 	red,
-	pipe
+	pip
 }	t_type;
+
+typedef struct s_env
+{
+	char			*key;
+	char			*val;
+	struct s_env	*next;
+}	t_env;
 
 typedef struct s_cmd
 {

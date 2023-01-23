@@ -7,28 +7,28 @@ int	exit_shell(int i) //exit || ctrl d
 	return (i);
 }
 
-int	change_dir(char *line) //dir변경 공백일때 홈
+int	change_dir(t_line *line) //dir변경 공백일때 홈
 {
 	int	result;
 
-	if (!line[3])
+	if (!line->cmd->next->str)
 	{
 		result = chdir("/Users/eunrlee/");
 	}
 	else
-		result = chdir(line + 3);
+		result = chdir(line->cmd->next->str);
 	if (result == -1)
-		perror(line + 3);
+		perror(line->cmd->next->str);
 	return (1);
 }
 
 int	get_pwd(int i) //getcwd를 이용해 작업중인 경로 buf사이즈는 수정
 {
 	char	*pwd;
-	char	buf[100];
 	
-	pwd = getcwd(buf, 100);
+	pwd = getcwd(NULL, 0);
 	ft_printf("%s\n", pwd);
+	free(pwd);
 	return (i);
 }
 

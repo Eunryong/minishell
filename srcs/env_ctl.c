@@ -6,83 +6,56 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:54 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/22 16:06:29 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/23 19:12:35 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-int	check_env(char **env, char *str)
-{
-	int		i;
-	char	tmp;
-	int		flag;
+t_env *env;
 
+void	add_back(char *eviron)
+{
+	t_env	*ret;
+
+	tmp = env;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->next = (t_env *)malloc(sizeof(t_env));
+	if (!tmp->next)
+		exit_error(amkldsf);
+	tmp = tmp->next;
+	tmp->ket = get_key(eviron);
+	tmp->val = get_val(eviron);
+	tmp->next = NULL;
+}
+
+
+void	export_env(t_line *line)
+{
+	if (!line->cmd->next)
+		// ㅊㅜㄹ력
+	else if (ft_strchr(line->cmd->next->str, '='))
+		//치환
+	else
+		add_back(line->cmd->next->str);
+}
+
+void	make_env(void)
+{
+	extern char **eviron;
+	t_env		tmp;
+	
+	if (!env)
+	{
+		env = (t_env*)malloc(sizeof(t_env));
+		if (!env)
+			exit_error(adjs);
+		env->key = get_key(eviron[0]);
+		env->val = get_val(eviron[0]);
+		env->next = NULL;
+	}
 	i = 0;
-	tmp = str;
-	flag = 0;
-	if (ft_strchr(tmp, '='))
-	{
-		flag = 1;
-		while (tmp[i] != '=')
-			i++;
-		tmp = ft_substr(str, 0, i);
-	}
-	i = -1;
-	while (env[++i])
-	{
-		if (ft_strncmp(env[i], str, ft_strlen(str)))
-			return (1);
-	}
-	if (flag)
-		free(tmp);
-	return (0);
-}
-
-int	display_env(t_line *line)
-{
-	int	i;
-
-	i = -1;
-	while (line->env[++i])
-		ft_printf("%s\n", line->env[i]);
-	return (1);
-}
-
-int	add_env(t_line *line)
-{
-	t_cmd	*tmp;
-
-	tmp = line->cmd->next;
-	if (!tmp)
-		return (display_env(line));
-	while (tmp)
-	{
-		if (check_env(line->env, tmp->str) && ft_strchr(tmp->str, '='))
-			line->env = change_env(line->env, tmp->str)
-		else if (ft_strchr(tmp->str, '='))
-			line->env = add_back(line->env, tmp->str);
-		tmp = tmp->next;
-	}	
-	return (1);
-}
-
-int	remove_env(t_line *line) // unset
-{
-	t_cmd	*tmp;
-
-	tmp = line->cmd->next;
-	while (tmp)
-	{
-		if (check_env(line->env, tmp->str))
-			line->env = remove_arr(line->env, str);
-		tmp = tmp->next;
-	}
-	return (1);
-}
-
-int	print_exit(t_line *line)
-{
-	ft_printf("%d\n", line->status >> 8);
-	return (1);
+	while (eviron[++i])
+		add_back(eviron[i]);
 }

@@ -6,17 +6,17 @@
 #    By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/20 22:01:20 by eunrlee           #+#    #+#              #
-#    Updated: 2023/01/21 02:53:49 by eunrlee          ###   ########.fr        #
+#    Updated: 2023/01/23 17:05:16 by eunrlee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
 CFLAGS = -Werror -Wall -Wextra -g
-RL_LIB = -lreadline -L/Users/eunrlee/.brew/opt/readline/lib
-RL_INC = -I/Users/eunrlee/.brew/opt/readline/include
+RL_LIB = -lreadline -L$(HOME)/.brew/opt/readline/lib
+RL_INC = -I$(HOME)/.brew/opt/readline/include
 NAME = minishell
 LIBFT = ./libft/libft.a
-SRCS = ./srcs/main.c ./srcs/excute.c ./srcs/builtins.c ./srcs/env_ctl.c
+SRCS = main.c ./srcs/env_ctl.c ./srcs/arr.c
 OBJS = $(SRCS:.c=.o)
 HEADER = -I./includes
 

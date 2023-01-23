@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 20:11:36 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/21 18:43:02 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/23 17:05:45 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,10 +34,13 @@ typedef struct s_arg
 }	t_arg;
 
 int		builtins_check(char *line, int status);
-void	set_excute(char *line, char **envp);
+void	set_excute(t_line *line);
 void	print_error(char *str, int exit_code);
-int		display_env(char *line);
-int		add_env(char *line);
-int		remove_env(char *line);
-int		print_exit(int status);
+int		display_env(char **env);
+char	**add_back(char **env, char *str, int size);
+char	**change_env(char **env, char *str);
+char	**remove_arr(char **env, char *str);
+int		remove_env(t_line *line);
+int		print_exit(t_line *line);
+int		print_export(char **env);
 #endif
