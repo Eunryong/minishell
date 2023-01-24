@@ -38,7 +38,7 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	tcgetattr(STDIN_FILENO, &term);
-	main_init(argc); //구조체 초기화
+	main_init(argc);
 	while (1)
 	{
 		rd_line = readline("minishell $ ");
@@ -49,7 +49,6 @@ int	main(int argc, char **argv, char **envp)
 		if (*rd_line != '\0' && !is_space(rd_line))
 		{
 			parse(&line, rd_line, envp);
-			
 			set_excute(&line);
 		}
 		free(rd_line);

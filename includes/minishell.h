@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 20:11:36 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/24 22:26:43 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/24 22:46:49 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ extern t_env *env;
 
 extern char **environ;
 
-int		builtins_check(t_line *line, int status);
+int		builtins_check(t_line *line);
 void	set_excute(t_line *line);
 
 void	print_error(char *str, int exit_code);

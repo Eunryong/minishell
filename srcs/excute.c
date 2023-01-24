@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:41:20 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/24 21:38:57 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/24 22:46:32 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,6 +63,8 @@ void	set_excute(t_line *line)
 	int		i;
 
 	i = -1;
+	if (!builtins_check(line))
+	{	
 	while (++i < line->size && line->cmd)
 	{
 		if (pipe(fd) < 0)
@@ -80,4 +82,5 @@ void	set_excute(t_line *line)
 		line->cmd = line->cmd->next;
 	}
 	wait_all(line, pid);
+	}
 }
