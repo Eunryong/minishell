@@ -9,11 +9,13 @@ int	exit_shell(int i) //exit || ctrl d
 
 int	change_dir(t_line *line) //dir변경 공백일때 홈
 {
-	int	result;
+	int		result;
+	t_env	*home;
 
-	if (!line->cmd->next->str)
+	if (!line->cmd->next)
 	{
-		result = chdir("/Users/eunrlee/");
+		home = check_env("HOME");
+		result = chdir(home->val);
 	}
 	else
 		result = chdir(line->cmd->next->str);

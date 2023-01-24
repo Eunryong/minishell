@@ -6,13 +6,11 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:54 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/24 22:25:39 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/24 23:06:47 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_env *env;
 
 void	remove_env(t_env *del)
 {

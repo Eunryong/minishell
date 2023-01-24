@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+t_env	*env;
+
 void	print_error(char *str, int exit_code)
 {
 	perror(str);
