@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 20:11:36 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/23 17:05:45 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/24 22:26:43 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,23 +24,33 @@
 # include "libft.h"
 # include "structure.h"
 
-typedef struct s_arg
-{
-	char			**env;
-	char			**cmd;
-	int				infile;
-	int				outfile;
-	struct s_arg	*next;
-}	t_arg;
+extern t_env *env;
 
-int		builtins_check(char *line, int status);
+extern char **environ;
+
+int		builtins_check(t_line *line, int status);
 void	set_excute(t_line *line);
+
 void	print_error(char *str, int exit_code);
-int		display_env(char **env);
-char	**add_back(char **env, char *str, int size);
-char	**change_env(char **env, char *str);
-char	**remove_arr(char **env, char *str);
-int		remove_env(t_line *line);
+
+char	**push_back_arr(char **env, char *str, int size);
+void	add_back(char *eviron);
+char	**env_to_arr(void);
+char	*env_to_str(char *key, char *val);
+
+void	remove_env(t_env *del);
+int		unset_env(t_line *line);
+int		export_env(t_line *line);
 int		print_exit(t_line *line);
-int		print_export(char **env);
+void	print_export(void);
+int		print_env(void);
+t_env	*check_env(char *str);
+char	*get_key(char *str);
+char	*get_val(char *str);
+void	make_env(void);
+
+char	**get_cmd_arg(t_line *line);
+char	*get_cmd(char **path, char *cmd);
+void	get_io(t_line *line, int *fd, int i);
+void	parse(t_line *line, char *rd_line, char **envp);
 #endif

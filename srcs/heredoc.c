@@ -25,7 +25,7 @@ int	set_heredoc_file(char *limiter, char *filename)
 		str = get_next_line(0);
 		if (!ft_strncmp(str, limiter, ft_strlen(str)))
 			break ;
-		ft_putstr(str, fd);
+		ft_putstr_fd(str, fd);
 		free(str);
 	}
 	close(fd);
@@ -45,7 +45,7 @@ int	set_heredoc(t_line *line)
 	i = 0;
 	while (tmp)
 	{
-		if (cmd->type == red && !ft_strncmp(tmp->str, "<<", ft_strlen(tmp->str)))
+		if (tmp->type == red && !ft_strncmp(tmp->str, "<<", ft_strlen(tmp->str)))
 		{
 			tmp = tmp->next;
 			pid = fork();

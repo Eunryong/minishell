@@ -26,12 +26,14 @@ void	main_init(int argc)
 	tcgetattr(STDIN_FILENO, &term);
 	term.c_lflag &= ~(ECHOCTL);
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
+	make_env();
 }
 
 int	main(int argc, char **argv, char **envp)
 {
-	char			*line;
+	char			*rd_line;
 	struct termios	term;
+	t_line			line;
 
 	(void)argv;
 	(void)envp;
@@ -39,17 +41,18 @@ int	main(int argc, char **argv, char **envp)
 	main_init(argc); //구조체 초기화
 	while (1)
 	{
-		line = readline("minishell $ ");
-		if (!line)
+		rd_line = readline("minishell $ ");
+		if (!rd_line)
 			break ;
-		if (*line != '\0')
-			add_history(line);
-		if (*line != '\0' && !is_space(line))
+		if (*rd_line != '\0')
+			add_history(rd_line);
+		if (*rd_line != '\0' && !is_space(rd_line))
 		{
-			//parsing
-			set_excute(line, envp);
+			parse(&line, rd_line, envp);
+			
+			set_excute(&line);
 		}
-		free(line);
+		free(rd_line);
 	}
 	tcsetattr(STDIN_FILENO, TCSANOW, &term);
 }

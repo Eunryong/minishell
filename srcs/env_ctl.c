@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:54 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/23 19:12:35 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/24 22:25:39 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,48 +14,96 @@
 
 t_env *env;
 
-void	add_back(char *eviron)
+void	remove_env(t_env *del)
 {
-	t_env	*ret;
+	t_env	*tmp;
 
 	tmp = env;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = (t_env *)malloc(sizeof(t_env));
-	if (!tmp->next)
-		exit_error(amkldsf);
-	tmp = tmp->next;
-	tmp->ket = get_key(eviron);
-	tmp->val = get_val(eviron);
-	tmp->next = NULL;
-}
-
-
-void	export_env(t_line *line)
-{
-	if (!line->cmd->next)
-		// ㅊㅜㄹ력
-	else if (ft_strchr(line->cmd->next->str, '='))
-		//치환
-	else
-		add_back(line->cmd->next->str);
-}
-
-void	make_env(void)
-{
-	extern char **eviron;
-	t_env		tmp;
-	
-	if (!env)
+	if (del == tmp)
 	{
-		env = (t_env*)malloc(sizeof(t_env));
-		if (!env)
-			exit_error(adjs);
-		env->key = get_key(eviron[0]);
-		env->val = get_val(eviron[0]);
-		env->next = NULL;
+		env = env->next;
+		free (del->key);
+		if (del->val)
+			free(del->val);
+		free(del);
+		return ;
 	}
-	i = 0;
-	while (eviron[++i])
-		add_back(eviron[i]);
+	while (tmp->next == del)
+		tmp = tmp->next;
+	tmp->next = del->next;
+	free(del->key);
+	if (del->val)
+		free(del->val);
+	free(del);
+}
+
+int		print_env(void)
+{
+	t_env	*tmp;
+
+	tmp = env;
+	while (tmp)
+	{
+		if (tmp->val)
+			ft_printf("%s=%s\n", tmp->key, tmp->val);
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+void	print_export(void)
+{
+	t_env	*tmp;
+
+	tmp = env;
+	while (tmp)
+	{
+		if (tmp->val)
+			ft_printf("declare -x %s=\"%s\"\n", tmp->key, tmp->val);
+		else
+			ft_printf("declare -x %s\n", tmp->key);
+		tmp = tmp->next;
+	}
+}
+
+int	export_env(t_line *line)
+{
+	t_cmd	*tmp;
+	t_env	*env_tmp;
+	char	*str_tmp;
+
+	tmp = line->cmd;
+	if (!tmp->next)
+		print_export();
+	tmp = tmp->next;
+	while (tmp)
+	{
+		if (check_env(tmp->str) && ft_strchr(tmp->str, '='))
+		{
+			env_tmp = check_env(tmp->str);
+			str_tmp = env_tmp->val;
+			env_tmp->val = get_val(tmp->str);
+			free(str_tmp);
+		}
+		else
+			add_back(tmp->str);
+		tmp = tmp->next;
+	}
+	return (1);
+}
+
+int	unset_env(t_line *line)
+{
+	t_cmd	*tmp;
+	t_env	*env_tmp;
+
+	tmp = line->cmd->next;
+	while (tmp)
+	{
+		env_tmp = check_env(tmp->str);
+		if (env_tmp)
+			remove_env(env_tmp);
+		tmp = tmp->next;
+	}
+	return (1);
 }

@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:35 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/23 17:07:59 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/24 21:34:14 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,26 +28,12 @@ char	**remove_arr(char **env, char *str)
 		ret[i] = env[i];
 	free (env[i]);
 	while (env[++i + 1])
-	{
 		ret[i] = env[i + 1];
-	}
 	free(env);
 	return (ret);
 }
 
-char	**change_env(char **env, char *str)
-{
-	int	i;
-
-	i = 0;
-	while (ft_strncmp(env[i], str, ft_strlen(str)))
-		i++;
-	free(env[i]);
-	env[i] = ft_strdup(str);
-	return (env);
-}
-
-char	**add_back(char **str_tmp, char *str, int size)
+char	**push_back_arr(char **str_tmp, char *str, int size)
 {
 	char	**ret;
 	int		i;
@@ -62,5 +48,48 @@ char	**add_back(char **str_tmp, char *str, int size)
 	ret[i] = ft_strdup(str);
 	if (str_tmp)
 		free(str_tmp);
+	return (ret);
+}
+
+char	*env_to_str(char *key, char *val)
+{
+	char	*ret;
+	int		k_len;
+	int		v_len;
+	int		i;
+
+	k_len = ft_strlen(key);
+	v_len = ft_strlen(val);
+	ret = (char *)malloc(sizeof(char) * k_len + v_len + 2);
+	if (!ret)
+		print_error("allocated error", 1);
+	i = -1;
+	while (++i < k_len)
+		ret[i] = key[i];
+	ret[i] = '=';
+	while (++i < k_len + v_len + 1)
+		ret[i + 1] = val[i - k_len];
+	ret[i + 1] = 0;
+	return (ret);
+}
+
+char	**env_to_arr(void)
+{
+	char	**ret;
+	t_env	*tmp;
+	char	*str_tmp;
+	int		size;
+
+	tmp = env;
+	size = 0;
+	while (tmp)
+	{
+		if (tmp->val)
+		{
+			str_tmp = env_to_str(tmp->key, tmp->val);
+			ret = push_back_arr(ret, str_tmp, size++);
+		}
+		tmp = tmp->next;
+	}
 	return (ret);
 }

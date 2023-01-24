@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 00:12:39 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/22 02:06:09 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/24 21:40:47 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,21 +16,21 @@ void	set_red(t_cmd *cmd, int *f_flag, int *b_flag)
 {
 	int	fd;
 
-	if (ft_strncmp(cmd, "<" , ft_strlen(cmd)))
+	if (ft_strncmp(cmd->str, "<" , ft_strlen(cmd->str)))
 	{
 		*f_flag = 1;
 		fd = open(cmd->next->str, O_RDONLY);
 		dup2(fd, STDIN_FILENO);
-		close(fd)
+		close(fd);
 	}
-	else if (ft_strncmp(cmd, ">", ft_strlen(cmd)))
+	else if (ft_strncmp(cmd->str, ">", ft_strlen(cmd->str)))
 	{
 		*b_flag = 1;
 		fd = open(cmd->next->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
-	else if (ft_strncmp(cmd, ">>", ft_strlen(cmd)))
+	else if (ft_strncmp(cmd->str, ">>", ft_strlen(cmd->str)))
 	{
 		*b_flag = 2;
 		fd = open(cmd->next->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
@@ -39,7 +39,7 @@ void	set_red(t_cmd *cmd, int *f_flag, int *b_flag)
 	}
 }
 
-void	get_io(t_line *line, int fd, int i)
+void	get_io(t_line *line, int *fd, int i)
 {
 	int		f_flag;
 	int		b_flag;

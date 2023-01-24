@@ -19,6 +19,10 @@ typedef struct s_cmd
 {
 	char			*str;
 	int				type;
+	int				quotes;
+	int				dollar;
+	int				status;
+	int				pipe;
 	struct s_cmd	*next;
 }	t_cmd;
 
