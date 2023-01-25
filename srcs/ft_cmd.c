@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:41:23 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/24 23:20:51 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:49:55 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,22 +43,23 @@ char	**get_cmd_arg(t_line *line)
 	char	**ret;
 	int		i;
 
-	i = 1;
+	i = 0;
 	tmp = line->cmd;
-	while (tmp && i < line->size)
+	ret = 0;
+/*	while (tmp && i < line->size)
 	{
 		if (tmp->type == pip)
 			i++;
 		tmp = tmp->next;
-	}
+	}*/
 	i = 0;
 	while (tmp)
 	{
 		str_tmp = ret;
 		if (tmp->type == cmd)
-			ret = push_back_arr(str_tmp, tmp->str, i++);
+		ret = push_back_arr(str_tmp, tmp->str, ++i);
 		if (tmp->type == red)
-			tmp = tmp->next;
+			continue ;
 		tmp = tmp->next;
 	}
 	return (ret);

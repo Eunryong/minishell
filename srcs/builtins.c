@@ -1,13 +1,27 @@
 #include "minishell.h"
 
-int	exit_shell(int i) //exit || ctrl d
+int	exit_shell(t_line *line)
 {
+	t_cmd	*tmp;
+	int		i;
+
+	tmp = line->cmd->next;
 	write(1, "exit\n", 5);
+	if (tmp)
+	{
+		i = -1;
+		while (tmp->str[++i])
+		{
+			if(!ft_isdigit(tmp->str[i]))
+				print_error("exit error", 255);
+		}
+		exit(ft_atoi(tmp->str));
+	}
 	exit(0);
-	return (i);
+	return (1);
 }
 
-int	change_dir(t_line *line) //dir변경 공백일때 홈
+int	change_dir(t_line *line)
 {
 	int		result;
 	t_env	*home;
@@ -78,7 +92,7 @@ int	builtins_check(t_line *line)
 	if (!ft_strncmp(tmp->str, "export", ft_strlen(tmp->str)))
 		return (export_env(line));
 	if (!ft_strncmp(tmp->str, "exit", ft_strlen(tmp->str)))
-		return (ft_printf("exit"));
+		return (exit_shell(line));
 	if (!ft_strncmp(tmp->str, "env", ft_strlen(tmp->str)))
 		return (print_env());
 	return (0);

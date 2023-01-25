@@ -6,7 +6,7 @@
 #    By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/20 22:01:20 by eunrlee           #+#    #+#              #
-#    Updated: 2023/01/24 22:58:30 by eunrlee          ###   ########.fr        #
+#    Updated: 2023/01/25 17:30:38 by eunrlee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -23,7 +23,7 @@ HEADER = -I./includes
 all : $(NAME)
 
 $(NAME) : $(OBJS) $(LIBFT)
-			$(CC) $(CFLAGS) -o $(NAME) $(HEADER) $(LIBFT) $(OBJS) $(RL_LIB)
+			$(CC) $(CFLAGS) -o $(NAME) $(HEADER) $(LIBFT) $(MFLAGS) $(OBJS) $(RL_LIB)
 %.o : %.c
 			$(CC) $(CFLAGS) $(RL_INC) $(HEADER) -c $< -o $@
 $(LIBFT) :

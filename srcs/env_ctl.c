@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:54 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/24 23:06:47 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/25 17:06:31 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	remove_env(t_env *del)
 	free(del);
 }
 
-int		print_env(void)
+int	print_env(void)
 {
 	t_env	*tmp;
 
@@ -68,22 +68,22 @@ int	export_env(t_line *line)
 {
 	t_cmd	*tmp;
 	t_env	*env_tmp;
-	char	*str_tmp;
 
-	tmp = line->cmd;
-	if (!tmp->next)
+	tmp = line->cmd->next;
+	if (!tmp)
 		print_export();
-	tmp = tmp->next;
 	while (tmp)
 	{
-		if (check_env(tmp->str) && ft_strchr(tmp->str, '='))
+		if (!ft_isalpha(tmp->str[0]))
+			print_error("not a valid identifier", 1);
+		else if (check_env(tmp->str) && ft_strchr(tmp->str, '='))
 		{
 			env_tmp = check_env(tmp->str);
-			str_tmp = env_tmp->val;
+			if (env_tmp->val)
+				free(env_tmp->val);
 			env_tmp->val = get_val(tmp->str);
-			free(str_tmp);
 		}
-		else
+		else if (!check_env(tmp->str))
 			add_back(tmp->str);
 		tmp = tmp->next;
 	}
