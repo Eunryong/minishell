@@ -6,12 +6,12 @@
 #    By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/20 22:01:20 by eunrlee           #+#    #+#              #
-#    Updated: 2023/01/26 15:09:04 by eunrlee          ###   ########.fr        #
+#    Updated: 2023/01/26 19:16:39 by eunrlee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Werror -Wall -Wextra -g3
+CFLAGS = -Werror -Wall -Wextra -g
 RL_LIB = -lreadline -L$(HOME)/.brew/opt/readline/lib
 RL_INC = -I$(HOME)/.brew/opt/readline/include
 NAME = minishell
@@ -23,7 +23,7 @@ HEADER = -I./includes
 all : $(NAME)
 
 $(NAME) : $(OBJS) $(LIBFT)
-			$(CC) $(CFLAGS) -o $(NAME) $(HEADER) $(LIBFT) $(MFLAGS) $(OBJS) $(RL_LIB)
+			$(CC) $(CFLAGS) -o $(NAME) $(HEADER) $(LIBFT) $(OBJS) $(RL_LIB)
 %.o : %.c
 			$(CC) $(CFLAGS) $(RL_INC) $(HEADER) -c $< -o $@
 $(LIBFT) :
@@ -31,3 +31,9 @@ $(LIBFT) :
 clean :
 		make -C ./libft fclean
 		rm -rf $(OBJS)
+fclean : clean
+		rm -rf $(NAME)
+re :
+		make fclean
+		make all
+		
