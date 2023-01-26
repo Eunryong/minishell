@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:41:20 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/25 15:50:51 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 19:05:45 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,14 +43,21 @@ char	**get_path(void)
 	return (ft_split(tmp->val, ':'));
 }
 
-void	excute(t_line *line)
+void	excute(t_line *line, int *fd, int i)
 {
 	char	**cmd_arg;
 	char	*cmd;
 	char	**path;
 
+	if (builtins_check(line))
+	{
+		builtins_set(line, 0);
+		exit(0);
+	}
+	(void)fd;
+	get_io(line, fd, i);
 	path = get_path();
-	cmd_arg = get_cmd_arg(line);
+	cmd_arg = get_cmd_arg(line, i);
 	cmd = get_cmd(path, cmd_arg[0]);
 	if (!cmd)
 		print_error("command not found", 127);
@@ -63,27 +70,26 @@ void	set_excute(t_line *line)
 	pid_t	pid;
 	int		fd[2];
 	int		i;
+	t_cmd	*tmp;
 
 	i = -1;
-	line->size = 1;
-	if (!builtins_check(line))
-	{	
-		while (++i < line->size && line->cmd)
-		{
-			if (pipe(fd) < 0)
-				print_error("pipe error", 1);
-			pid = fork();
-			if (pid == -1)
-				print_error("fork error", 1);
-			if (pid == 0)
-			{
-				get_io(line, fd, i);
-				excute(line);
-			}
-			close(fd[0]);
-			close(fd[1]);
-			line->cmd = line->cmd->next;
-		}
-		wait_all(line, pid);
+	tmp = line->cmd;
+	if (builtins_check(line) && line->size == 1)
+		return builtins_set(line, 1);
+	while (++i < line->size && tmp)
+	{
+		if (pipe(fd) < 0)
+			print_error("pipe error", 1);
+		pid = fork();
+		if (pid == -1)
+			print_error("fork error", 1);
+		if (pid == 0)
+			excute(line, fd, i);
+		dup2(fd[0], STDIN_FILENO);
+		close(fd[0]);
+		close(fd[1]);
+		tmp = tmp->next;
 	}
+	backup_fd(line);
+	wait_all(line, pid);
 }

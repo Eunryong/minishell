@@ -6,7 +6,7 @@
 #    By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/20 22:01:20 by eunrlee           #+#    #+#              #
-#    Updated: 2023/01/25 17:30:38 by eunrlee          ###   ########.fr        #
+#    Updated: 2023/01/26 15:09:04 by eunrlee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -16,7 +16,7 @@ RL_LIB = -lreadline -L$(HOME)/.brew/opt/readline/lib
 RL_INC = -I$(HOME)/.brew/opt/readline/include
 NAME = minishell
 LIBFT = ./libft/libft.a
-SRCS = ./srcs/main.c ./srcs/env_ctl.c ./srcs/environ.c ./srcs/arr.c ./srcs/excute.c ./srcs/redirection.c ./srcs/ft_cmd.c ./srcs/parse.c ./srcs/builtins.c
+SRCS = ./srcs/main.c ./srcs/env_ctl.c ./srcs/environ.c ./srcs/arr.c ./srcs/excute.c ./srcs/redirection.c ./srcs/ft_cmd.c ./srcs/parse.c ./srcs/builtins.c ./srcs/dir.c
 OBJS = $(SRCS:.c=.o)
 HEADER = -I./includes
 

@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:41:23 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/25 15:49:55 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 18:40:16 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,7 +36,7 @@ char	*get_cmd(char **path, char *cmd)
 	return (0);
 }
 
-char	**get_cmd_arg(t_line *line)
+char	**get_cmd_arg(t_line *line, int size)
 {
 	t_cmd	*tmp;
 	char	**str_tmp;
@@ -46,18 +46,18 @@ char	**get_cmd_arg(t_line *line)
 	i = 0;
 	tmp = line->cmd;
 	ret = 0;
-/*	while (tmp && i < line->size)
+	while (tmp && i < size)
 	{
 		if (tmp->type == pip)
 			i++;
 		tmp = tmp->next;
-	}*/
+	}
 	i = 0;
-	while (tmp)
+	while (tmp && tmp->type != pip)
 	{
 		str_tmp = ret;
 		if (tmp->type == cmd)
-		ret = push_back_arr(str_tmp, tmp->str, ++i);
+			ret = push_back_arr(str_tmp, tmp->str, ++i);
 		if (tmp->type == red)
 			continue ;
 		tmp = tmp->next;

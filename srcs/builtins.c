@@ -1,6 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/26 15:29:32 by eunrlee           #+#    #+#             */
+/*   Updated: 2023/01/26 18:23:03 by eunrlee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	exit_shell(t_line *line)
+void	exit_shell(t_line *line)
 {
 	t_cmd	*tmp;
 	int		i;
@@ -18,37 +30,9 @@ int	exit_shell(t_line *line)
 		exit(ft_atoi(tmp->str));
 	}
 	exit(0);
-	return (1);
 }
 
-int	change_dir(t_line *line)
-{
-	int		result;
-	t_env	*home;
-
-	if (!line->cmd->next)
-	{
-		home = check_env("HOME");
-		result = chdir(home->val);
-	}
-	else
-		result = chdir(line->cmd->next->str);
-	if (result == -1)
-		perror(line->cmd->next->str);
-	return (1);
-}
-
-int	get_pwd(int i)
-{
-	char	*pwd;
-	
-	pwd = getcwd(NULL, 0);
-	ft_printf("%s\n", pwd);
-	free(pwd);
-	return (i);
-}
-
-int	echo_line(t_line *line)
+void	echo_line(t_line *line)
 {
 	t_cmd	*tmp;
 	int		flag;
@@ -73,7 +57,6 @@ int	echo_line(t_line *line)
 	}
 	if (!flag)
 		write(1, "\n", 1);
-	return (1);
 }
 
 int	builtins_check(t_line *line)
@@ -82,18 +65,47 @@ int	builtins_check(t_line *line)
 
 	tmp = line->cmd;
 	if (!ft_strncmp(tmp->str, "echo", ft_strlen(tmp->str)))
-		return (echo_line(line));
+		return (1);
 	if (!ft_strncmp(tmp->str, "pwd", ft_strlen(tmp->str)))
-		return (get_pwd(1));
+		return (1);
 	if (!ft_strncmp(tmp->str, "unset", ft_strlen(tmp->str)))
-		return (unset_env(line));
+		return (1);
 	if (!ft_strncmp(tmp->str, "cd", ft_strlen(tmp->str)))
-		return (change_dir(line));
+		return (1);
 	if (!ft_strncmp(tmp->str, "export", ft_strlen(tmp->str)))
-		return (export_env(line));
+		return (1);
 	if (!ft_strncmp(tmp->str, "exit", ft_strlen(tmp->str)))
-		return (exit_shell(line));
+		return (1);
 	if (!ft_strncmp(tmp->str, "env", ft_strlen(tmp->str)))
-		return (print_env());
+		return (1);
 	return (0);
+}
+
+void	builtins_exec(t_line *line)
+{
+	t_cmd	*tmp;
+
+	tmp = line->cmd;
+	if (!ft_strncmp(tmp->str, "echo", ft_strlen(tmp->str)))
+		echo_line(line);
+	if (!ft_strncmp(tmp->str, "pwd", ft_strlen(tmp->str)))
+		get_pwd();
+	if (!ft_strncmp(tmp->str, "unset", ft_strlen(tmp->str)))
+		unset_env(line);
+	if (!ft_strncmp(tmp->str, "cd", ft_strlen(tmp->str)))
+		change_dir(line);
+	if (!ft_strncmp(tmp->str, "export", ft_strlen(tmp->str)))
+		export_env(line);
+	if (!ft_strncmp(tmp->str, "exit", ft_strlen(tmp->str)))
+		exit_shell(line);
+	if (!ft_strncmp(tmp->str, "env", ft_strlen(tmp->str)))
+		print_env(line);
+}
+
+void	builtins_set(t_line *line, int flag)
+{
+	get_io(line, NULL, 0);
+	builtins_exec(line);
+	if (flag)
+		backup_fd(line);
 }

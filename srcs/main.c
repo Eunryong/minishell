@@ -41,6 +41,9 @@ int	main(int argc, char **argv, char **envp)
 	(void)envp;
 	tcgetattr(STDIN_FILENO, &term);
 	main_init(argc);
+	line.input = dup(STDIN_FILENO);
+	line.output = dup(STDOUT_FILENO);
+	line.size = 1;
 	while (1)
 	{
 		rd_line = readline("minishell $ ");

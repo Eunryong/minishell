@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:54 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/25 17:06:31 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 18:24:11 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,12 @@ void	remove_env(t_env *del)
 	free(del);
 }
 
-int	print_env(void)
+void	print_env(t_line *line)
 {
 	t_env	*tmp;
 
+	if (line->cmd->next)
+		return (ft_putstr_fd("Invalid argument.\n", 2));
 	tmp = env;
 	while (tmp)
 	{
@@ -46,7 +48,6 @@ int	print_env(void)
 			ft_printf("%s=%s\n", tmp->key, tmp->val);
 		tmp = tmp->next;
 	}
-	return (1);
 }
 
 void	print_export(void)
@@ -64,7 +65,7 @@ void	print_export(void)
 	}
 }
 
-int	export_env(t_line *line)
+void	export_env(t_line *line)
 {
 	t_cmd	*tmp;
 	t_env	*env_tmp;
@@ -87,10 +88,9 @@ int	export_env(t_line *line)
 			add_back(tmp->str);
 		tmp = tmp->next;
 	}
-	return (1);
 }
 
-int	unset_env(t_line *line)
+void	unset_env(t_line *line)
 {
 	t_cmd	*tmp;
 	t_env	*env_tmp;
@@ -103,5 +103,4 @@ int	unset_env(t_line *line)
 			remove_env(env_tmp);
 		tmp = tmp->next;
 	}
-	return (1);
 }

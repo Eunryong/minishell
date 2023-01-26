@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:29:00 by wocheon           #+#    #+#             */
-/*   Updated: 2023/01/25 15:56:02 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 18:26:17 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,6 +108,8 @@ t_cmd	*split_pipe(t_line *line, t_cmd *cmd, char c1, char c2)
 	new->str = ft_join_char(new->str, c1);
 	cmd->next = new;
 	new->pipe = 1;
+	new->type = pip;
+	line->size++;
 	cmd = cmd->next;
 	if (c2 != ' ')
 	{
