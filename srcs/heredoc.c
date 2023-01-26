@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:55:31 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/26 14:50:16 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 19:51:15 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ int	set_heredoc_file(char *limiter, char *filename)
 	return (0);
 }
 
-int	set_heredoc(t_line *line)
+void	set_heredoc(t_line *line)
 {
 	t_cmd	*tmp;
 	int		i;
@@ -45,15 +45,27 @@ int	set_heredoc(t_line *line)
 	i = 0;
 	while (tmp)
 	{
-		if (tmp->type == red && !ft_strncmp(tmp->str, "<<", ft_strlen(tmp->str)))
+		if (tmp->type == red && \
+				!ft_strncmp(tmp->str, "<<", ft_strlen(tmp->str)))
 		{
 			tmp = tmp->next;
 			pid = fork();
 			if (pid == 0)
 				set_heredoc_file(ft_strjoin(tmp->str, "\n"), \
-						ft_strjoin("/tmp/.heredoc/", ft_itoa(i++)));
+						get_filename(i++));
 		}
 		tmp = tmp->next;
 	}
 	wait_all(line, pid);
+}
+
+char	*get_filename(int i)
+{
+	char	*ret;
+	char	*num;
+
+	num = ft_itoa(i);
+	ret = ft_strjoin("/tmp/.heredoc/", num);
+	free(num);
+	return (ret);
 }

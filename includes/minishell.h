@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 20:11:36 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/26 19:33:01 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 19:48:23 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,5 +62,8 @@ char	**get_cmd_arg(t_line *line, int size);
 char	*get_cmd(char **path, char *cmd);
 void	set_excute(t_line *line);
 void	get_io(t_line *line, int *fd, int i);
+
+char	*get_filename(int i);
+
 void	parse(t_line *line, char *rd_line, char **envp);
 #endif

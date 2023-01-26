@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/26 15:29:32 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/26 18:23:03 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 19:52:02 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ void	exit_shell(t_line *line)
 		i = -1;
 		while (tmp->str[++i])
 		{
-			if(!ft_isdigit(tmp->str[i]))
+			if (!ft_isdigit(tmp->str[i]))
 				print_error("exit error", 255);
 		}
 		exit(ft_atoi(tmp->str));

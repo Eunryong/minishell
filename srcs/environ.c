@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 19:42:05 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/25 16:10:55 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 19:51:47 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	make_env(void)
 
 	if (!env)
 	{
-		env = (t_env*)malloc(sizeof(t_env));
+		env = (t_env *)malloc(sizeof(t_env));
 		if (!env)
 			print_error("allocated error", 1);
 		env->key = get_key(environ[0]);
