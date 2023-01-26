@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:29:00 by wocheon           #+#    #+#             */
-/*   Updated: 2023/01/24 22:32:30 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 18:26:17 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ int	get_quotes(char c, int quotes)
 	return (result);
 }
 
-t_cmd	*push_back(t_line *line)
+t_cmd	*push_back_cmd(t_line *line)
 {
 	t_cmd	*new;
 
@@ -108,6 +108,8 @@ t_cmd	*split_pipe(t_line *line, t_cmd *cmd, char c1, char c2)
 	new->str = ft_join_char(new->str, c1);
 	cmd->next = new;
 	new->pipe = 1;
+	new->type = pip;
+	line->size++;
 	cmd = cmd->next;
 	if (c2 != ' ')
 	{
@@ -189,15 +191,7 @@ void	tokenize(t_line *line, t_cmd *cmd, char *rd_line)
 
 void	parse(t_line *line, char *rd_line, char **envp)
 {
-	t_cmd	*new;
-
 	(void) envp;
-	line->cmd = push_back(line);
+	line->cmd = push_back_cmd(line);
 	tokenize(line, line->cmd, rd_line);
-	new = line->cmd;
-	while (new)
-	{
-		printf("%s\n", new->str);
-		new = new->next;
-	}
 }

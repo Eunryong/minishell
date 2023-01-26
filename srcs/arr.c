@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:35 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/24 21:34:14 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/25 15:35:08 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,9 +67,10 @@ char	*env_to_str(char *key, char *val)
 	while (++i < k_len)
 		ret[i] = key[i];
 	ret[i] = '=';
-	while (++i < k_len + v_len + 1)
-		ret[i + 1] = val[i - k_len];
-	ret[i + 1] = 0;
+	i = -1;
+	while (++i < v_len)
+		ret[k_len + i + 1] = val[i];
+	ret[k_len + i + 1] = 0;
 	return (ret);
 }
 
@@ -80,6 +81,7 @@ char	**env_to_arr(void)
 	char	*str_tmp;
 	int		size;
 
+	ret = 0;
 	tmp = env;
 	size = 0;
 	while (tmp)

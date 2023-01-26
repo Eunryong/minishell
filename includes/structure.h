@@ -33,6 +33,8 @@ typedef struct s_line
 	t_cmd	*cmd;
 	int		size;
 	char	**env;
+	int		input;
+	int		output;
 	int		status;
 }	t_line;
 

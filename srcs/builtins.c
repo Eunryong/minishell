@@ -1,67 +1,111 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   builtins.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2023/01/26 15:29:32 by eunrlee           #+#    #+#             */
+/*   Updated: 2023/01/26 18:23:03 by eunrlee          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
 
-int	exit_shell(int i) //exit || ctrl d
+void	exit_shell(t_line *line)
 {
+	t_cmd	*tmp;
+	int		i;
+
+	tmp = line->cmd->next;
 	write(1, "exit\n", 5);
+	if (tmp)
+	{
+		i = -1;
+		while (tmp->str[++i])
+		{
+			if(!ft_isdigit(tmp->str[i]))
+				print_error("exit error", 255);
+		}
+		exit(ft_atoi(tmp->str));
+	}
 	exit(0);
-	return (i);
 }
 
-int	change_dir(t_line *line) //dir변경 공백일때 홈
+void	echo_line(t_line *line)
 {
-	int	result;
+	t_cmd	*tmp;
+	int		flag;
 
-	if (!line->cmd->next->str)
+	tmp = line->cmd;
+	flag = 0;
+	if (tmp->next)
 	{
-		result = chdir("/Users/eunrlee/");
+		if (!ft_strncmp(tmp->next->str, "-n", ft_strlen(tmp->next->str)))
+		{
+			flag = 1;
+			tmp = tmp->next;
+		}
+		tmp = tmp->next;
+		while (tmp)
+		{
+			ft_printf("%s", tmp->str);
+			if (tmp->next)
+				write(1, " ", 1);
+			tmp = tmp->next;
+		}
 	}
-	else
-		result = chdir(line->cmd->next->str);
-	if (result == -1)
-		perror(line->cmd->next->str);
-	return (1);
+	if (!flag)
+		write(1, "\n", 1);
 }
 
-int	get_pwd(int i)
-{
-	char	*pwd;
-	
-	pwd = getcwd(NULL, 0);
-	ft_printf("%s\n", pwd);
-	free(pwd);
-	return (i);
-}
-
-int	echo_line(char *line)
-{
-	int	i;
-
-	i = 7;
-	while (line[++i] && line[i] != '\n')
-	{
-		write(1, &line[i], 1);
-	}
-	return (1);
-}
-
-int	builtins_check(t_line *line, int status)
+int	builtins_check(t_line *line)
 {
 	t_cmd	*tmp;
 
 	tmp = line->cmd;
 	if (!ft_strncmp(tmp->str, "echo", ft_strlen(tmp->str)))
-		return (echo_line(line));
+		return (1);
 	if (!ft_strncmp(tmp->str, "pwd", ft_strlen(tmp->str)))
-		return (get_pwd(1));
+		return (1);
 	if (!ft_strncmp(tmp->str, "unset", ft_strlen(tmp->str)))
-		return (unset_env(line));
+		return (1);
 	if (!ft_strncmp(tmp->str, "cd", ft_strlen(tmp->str)))
-		return (change_dir(line));
+		return (1);
 	if (!ft_strncmp(tmp->str, "export", ft_strlen(tmp->str)))
-		return (add_env(line));
+		return (1);
 	if (!ft_strncmp(tmp->str, "exit", ft_strlen(tmp->str)))
-		return (exit_shell(1));
+		return (1);
 	if (!ft_strncmp(tmp->str, "env", ft_strlen(tmp->str)))
-		return (display_env(line));
+		return (1);
 	return (0);
+}
+
+void	builtins_exec(t_line *line)
+{
+	t_cmd	*tmp;
+
+	tmp = line->cmd;
+	if (!ft_strncmp(tmp->str, "echo", ft_strlen(tmp->str)))
+		echo_line(line);
+	if (!ft_strncmp(tmp->str, "pwd", ft_strlen(tmp->str)))
+		get_pwd();
+	if (!ft_strncmp(tmp->str, "unset", ft_strlen(tmp->str)))
+		unset_env(line);
+	if (!ft_strncmp(tmp->str, "cd", ft_strlen(tmp->str)))
+		change_dir(line);
+	if (!ft_strncmp(tmp->str, "export", ft_strlen(tmp->str)))
+		export_env(line);
+	if (!ft_strncmp(tmp->str, "exit", ft_strlen(tmp->str)))
+		exit_shell(line);
+	if (!ft_strncmp(tmp->str, "env", ft_strlen(tmp->str)))
+		print_env(line);
+}
+
+void	builtins_set(t_line *line, int flag)
+{
+	get_io(line, NULL, 0);
+	builtins_exec(line);
+	if (flag)
+		backup_fd(line);
 }

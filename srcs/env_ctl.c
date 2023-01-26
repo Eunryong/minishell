@@ -6,13 +6,11 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:54 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/24 22:25:39 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 18:24:11 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_env *env;
 
 void	remove_env(t_env *del)
 {
@@ -37,10 +35,12 @@ void	remove_env(t_env *del)
 	free(del);
 }
 
-int		print_env(void)
+void	print_env(t_line *line)
 {
 	t_env	*tmp;
 
+	if (line->cmd->next)
+		return (ft_putstr_fd("Invalid argument.\n", 2));
 	tmp = env;
 	while (tmp)
 	{
@@ -48,7 +48,6 @@ int		print_env(void)
 			ft_printf("%s=%s\n", tmp->key, tmp->val);
 		tmp = tmp->next;
 	}
-	return (1);
 }
 
 void	print_export(void)
@@ -66,33 +65,32 @@ void	print_export(void)
 	}
 }
 
-int	export_env(t_line *line)
+void	export_env(t_line *line)
 {
 	t_cmd	*tmp;
 	t_env	*env_tmp;
-	char	*str_tmp;
 
-	tmp = line->cmd;
-	if (!tmp->next)
+	tmp = line->cmd->next;
+	if (!tmp)
 		print_export();
-	tmp = tmp->next;
 	while (tmp)
 	{
-		if (check_env(tmp->str) && ft_strchr(tmp->str, '='))
+		if (!ft_isalpha(tmp->str[0]))
+			print_error("not a valid identifier", 1);
+		else if (check_env(tmp->str) && ft_strchr(tmp->str, '='))
 		{
 			env_tmp = check_env(tmp->str);
-			str_tmp = env_tmp->val;
+			if (env_tmp->val)
+				free(env_tmp->val);
 			env_tmp->val = get_val(tmp->str);
-			free(str_tmp);
 		}
-		else
+		else if (!check_env(tmp->str))
 			add_back(tmp->str);
 		tmp = tmp->next;
 	}
-	return (1);
 }
 
-int	unset_env(t_line *line)
+void	unset_env(t_line *line)
 {
 	t_cmd	*tmp;
 	t_env	*env_tmp;
@@ -105,5 +103,4 @@ int	unset_env(t_line *line)
 			remove_env(env_tmp);
 		tmp = tmp->next;
 	}
-	return (1);
 }
