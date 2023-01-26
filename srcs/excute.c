@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:41:20 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/26 19:05:45 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 19:32:16 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ void	set_excute(t_line *line)
 	i = -1;
 	tmp = line->cmd;
 	if (builtins_check(line) && line->size == 1)
-		return builtins_set(line, 1);
+		return (builtins_set(line, 1));
 	while (++i < line->size && tmp)
 	{
 		if (pipe(fd) < 0)

@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 20:11:36 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/26 18:40:44 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 19:33:01 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,8 @@ void	print_env(t_line *line);
 t_env	*check_env(char *str);
 
 int		wait_all(t_line *line, pid_t last_pid);
+
+void	clear_cmd(t_line *line);
 
 void	print_error(char *str, int exit_code);
 

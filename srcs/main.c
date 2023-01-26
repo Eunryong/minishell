@@ -55,6 +55,7 @@ int	main(int argc, char **argv, char **envp)
 		{
 			parse(&line, rd_line, envp);
 			set_excute(&line);
+			clear_cmd(&line);
 		}
 		free(rd_line);
 	}
