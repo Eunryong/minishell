@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:29:00 by wocheon           #+#    #+#             */
-/*   Updated: 2023/01/27 16:17:57 by wocheon          ###   ########.fr       */
+/*   Updated: 2023/01/27 16:27:34 by wocheon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -282,8 +282,10 @@ void	delete_null_node(t_line *line)
 
 void	parse(t_line *line, char *rd_line, char **envp)
 {
+	t_cmd	*new;
+	
 	(void) envp;
-	line->cmd = push_back_cmd(line);
+	line->cmd = push_back(line);
 	tokenize(line, line->cmd, rd_line);
 	new = line->cmd;
 	delete_null_node(line);
