@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 00:12:39 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/26 19:52:33 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:59:19 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,7 +67,6 @@ void	get_io(t_line *line, int *fd, int i)
 	t_cmd	*tmp;
 	int		heredoc_i;
 
-	close(fd[0]);
 	f_flag = 0;
 	b_flag = 0;
 	tmp = line->cmd;
@@ -86,5 +85,6 @@ void	get_io(t_line *line, int *fd, int i)
 		if (!b_flag && i != line->size - 1)
 			dup2(fd[1], STDOUT_FILENO);
 		close(fd[1]);
+		close(fd[0]);
 	}
 }

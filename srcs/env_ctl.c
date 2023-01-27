@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:54 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/26 18:24:11 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:20:51 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,11 +35,11 @@ void	remove_env(t_env *del)
 	free(del);
 }
 
-void	print_env(t_line *line)
+void	print_env(char **cmd_arg)
 {
 	t_env	*tmp;
 
-	if (line->cmd->next)
+	if (cmd_arg[1])
 		return (ft_putstr_fd("Invalid argument.\n", 2));
 	tmp = env;
 	while (tmp)
@@ -65,42 +65,40 @@ void	print_export(void)
 	}
 }
 
-void	export_env(t_line *line)
+void	export_env(char	**cmd_arg)
 {
-	t_cmd	*tmp;
 	t_env	*env_tmp;
+	int		i;
 
-	tmp = line->cmd->next;
-	if (!tmp)
+	if (!cmd_arg[1])
 		print_export();
-	while (tmp)
+	i = 0;
+	while (cmd_arg[++i])
 	{
-		if (!ft_isalpha(tmp->str[0]))
+		if (!ft_isalpha(cmd_arg[i][0]))
 			print_error("not a valid identifier", 1);
-		else if (check_env(tmp->str) && ft_strchr(tmp->str, '='))
+		else if (check_env(cmd_arg[i]) && ft_strchr(cmd_arg[i], '='))
 		{
-			env_tmp = check_env(tmp->str);
+			env_tmp = check_env(cmd_arg[i]);
 			if (env_tmp->val)
 				free(env_tmp->val);
-			env_tmp->val = get_val(tmp->str);
+			env_tmp->val = get_val(cmd_arg[i]);
 		}
-		else if (!check_env(tmp->str))
-			add_back(tmp->str);
-		tmp = tmp->next;
+		else if (!check_env(cmd_arg[i]))
+			add_back(cmd_arg[i]);
 	}
 }
 
-void	unset_env(t_line *line)
+void	unset_env(char **cmd_arg)
 {
-	t_cmd	*tmp;
 	t_env	*env_tmp;
+	int		i;
 
-	tmp = line->cmd->next;
-	while (tmp)
+	i = 0;
+	while (cmd_arg[++i])
 	{
-		env_tmp = check_env(tmp->str);
+		env_tmp = check_env(cmd_arg[i]);
 		if (env_tmp)
 			remove_env(env_tmp);
-		tmp = tmp->next;
 	}
 }

@@ -43,9 +43,9 @@ int	main(int argc, char **argv, char **envp)
 	main_init(argc);
 	line.input = dup(STDIN_FILENO);
 	line.output = dup(STDOUT_FILENO);
-	line.size = 1;
 	while (1)
 	{
+		line.size = 1;
 		rd_line = readline("minishell $ ");
 		if (!rd_line)
 			break ;
