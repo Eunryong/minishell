@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 18:29:00 by wocheon           #+#    #+#             */
-/*   Updated: 2023/01/27 15:10:15 by wocheon          ###   ########.fr       */
+/*   Updated: 2023/01/27 16:17:57 by wocheon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ t_cmd	*push_back(t_line *line)
 		exit_err("minishell: malloc error");
 	new->status = line->status;
 	new->next = NULL;
-	new->str = "\0";
+	new->str = 0;
 	new->quotes = 0;
 	new->dollar = 0;
 	new->pipe = 0;
@@ -262,6 +262,24 @@ void	tokenize(t_line *line, t_cmd *cmd, char *rd_line)
 // space after pipe,
 // command before and after pipe without space
 
+void	delete_null_node(t_line *line)
+{
+	t_cmd	*cmd;
+	t_cmd	*tmp;
+
+	cmd = line->cmd;
+	while (cmd)
+	{
+		if (cmd->next->str == 0)
+		{
+			tmp = cmd->next;
+			cmd->next = tmp->next;
+			free(tmp);
+		}
+		cmd = cmd->next;
+	}
+}
+
 void	parse(t_line *line, char *rd_line, char **envp)
 {
 	t_cmd	*new;
@@ -270,6 +288,7 @@ void	parse(t_line *line, char *rd_line, char **envp)
 	line->cmd = push_back(line);
 	tokenize(line, line->cmd, rd_line);
 	new = line->cmd;
+	delete_null_node(line);
 	while (new)
 	{
 		printf("%s \n", new->str);
