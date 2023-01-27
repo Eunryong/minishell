@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 20:11:36 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/26 19:33:01 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:29:16 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,18 +28,18 @@ extern t_env *env;
 
 extern char **environ;
 
-int		builtins_check(t_line *line);
-void	builtins_exec(t_line *line);
-void	builtins_set(t_line *line, int flag);
+int		builtins_check(char *str);
+void	builtins_exec(char **cmd_arg);
+void	builtins_set(t_line *line);
 
 void	get_pwd(void);
-void	change_dir(t_line *line);
+void	change_dir(char **cmd_arg);
 void	remove_env(t_env *del);
-void	unset_env(t_line *line);
-void	export_env(t_line *line);
-void	print_exit(t_line *line);
+void	unset_env(char **cmd_arg);
+void	export_env(char **cmd_arg);
+void	print_exit(char **cmd_arg);
 void	print_export(void);
-void	print_env(t_line *line);
+void	print_env(char **cmd_arg);
 t_env	*check_env(char *str);
 
 int		wait_all(t_line *line, pid_t last_pid);
@@ -62,5 +62,8 @@ char	**get_cmd_arg(t_line *line, int size);
 char	*get_cmd(char **path, char *cmd);
 void	set_excute(t_line *line);
 void	get_io(t_line *line, int *fd, int i);
+
+char	*get_filename(int i);
+void	free_cmd(char **cmd_arg);
 void	parse(t_line *line, char *rd_line, char **envp);
 #endif

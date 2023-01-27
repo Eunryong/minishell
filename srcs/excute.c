@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:41:20 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/26 19:32:16 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/27 14:46:53 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,15 +49,14 @@ void	excute(t_line *line, int *fd, int i)
 	char	*cmd;
 	char	**path;
 
-	if (builtins_check(line))
-	{
-		builtins_set(line, 0);
-		exit(0);
-	}
-	(void)fd;
 	get_io(line, fd, i);
 	path = get_path();
 	cmd_arg = get_cmd_arg(line, i);
+	if (builtins_check(cmd_arg[0]))
+	{
+		builtins_exec(cmd_arg);	
+		exit(0);
+	}
 	cmd = get_cmd(path, cmd_arg[0]);
 	if (!cmd)
 		print_error("command not found", 127);
@@ -74,8 +73,8 @@ void	set_excute(t_line *line)
 
 	i = -1;
 	tmp = line->cmd;
-	if (builtins_check(line) && line->size == 1)
-		return (builtins_set(line, 1));
+	if (builtins_check(tmp->str) && line->size == 1)
+		return (builtins_set(line));
 	while (++i < line->size && tmp)
 	{
 		if (pipe(fd) < 0)
