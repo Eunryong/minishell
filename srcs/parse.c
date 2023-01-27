@@ -282,10 +282,8 @@ void	delete_null_node(t_line *line)
 
 void	parse(t_line *line, char *rd_line, char **envp)
 {
-	t_cmd	*new;
-
 	(void) envp;
-	line->cmd = push_back(line);
+	line->cmd = push_back_cmd(line);
 	tokenize(line, line->cmd, rd_line);
 	new = line->cmd;
 	delete_null_node(line);

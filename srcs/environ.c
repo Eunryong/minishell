@@ -6,7 +6,7 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/24 19:42:05 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/24 21:31:56 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/26 19:51:47 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ void	make_env(void)
 
 	if (!env)
 	{
-		env = (t_env*)malloc(sizeof(t_env));
+		env = (t_env *)malloc(sizeof(t_env));
 		if (!env)
 			print_error("allocated error", 1);
 		env->key = get_key(environ[0]);
@@ -72,7 +72,7 @@ void	make_env(void)
 		add_back(environ[i]);
 }
 
-void	add_back(char *eviron)
+void	add_back(char *str)
 {
 	t_env	*tmp;
 
@@ -83,7 +83,7 @@ void	add_back(char *eviron)
 	if (!tmp->next)
 		print_error("allocated error", 1);
 	tmp = tmp->next;
-	tmp->key = get_key(eviron);
-	tmp->val = get_val(eviron);
+	tmp->key = get_key(str);
+	tmp->val = get_val(str);
 	tmp->next = NULL;
 }

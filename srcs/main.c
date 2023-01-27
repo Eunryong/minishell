@@ -1,5 +1,7 @@
 #include "minishell.h"
 
+t_env	*env;
+
 void	print_error(char *str, int exit_code)
 {
 	perror(str);
@@ -38,9 +40,12 @@ int	main(int argc, char **argv, char **envp)
 	(void)argv;
 	(void)envp;
 	tcgetattr(STDIN_FILENO, &term);
-	main_init(argc); //구조체 초기화
+	main_init(argc);
+	line.input = dup(STDIN_FILENO);
+	line.output = dup(STDOUT_FILENO);
 	while (1)
 	{
+		line.size = 1;
 		rd_line = readline("minishell $ ");
 		if (!rd_line)
 			break ;
@@ -49,8 +54,8 @@ int	main(int argc, char **argv, char **envp)
 		if (*rd_line != '\0' && !is_space(rd_line))
 		{
 			parse(&line, rd_line, envp);
-			
 			set_excute(&line);
+			clear_cmd(&line);
 		}
 		free(rd_line);
 	}

@@ -6,13 +6,11 @@
 /*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 03:10:54 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/24 22:25:39 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/01/27 13:20:51 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-t_env *env;
 
 void	remove_env(t_env *del)
 {
@@ -37,10 +35,12 @@ void	remove_env(t_env *del)
 	free(del);
 }
 
-int		print_env(void)
+void	print_env(char **cmd_arg)
 {
 	t_env	*tmp;
 
+	if (cmd_arg[1])
+		return (ft_putstr_fd("Invalid argument.\n", 2));
 	tmp = env;
 	while (tmp)
 	{
@@ -48,7 +48,6 @@ int		print_env(void)
 			ft_printf("%s=%s\n", tmp->key, tmp->val);
 		tmp = tmp->next;
 	}
-	return (1);
 }
 
 void	print_export(void)
@@ -66,44 +65,40 @@ void	print_export(void)
 	}
 }
 
-int	export_env(t_line *line)
+void	export_env(char	**cmd_arg)
 {
-	t_cmd	*tmp;
 	t_env	*env_tmp;
-	char	*str_tmp;
+	int		i;
 
-	tmp = line->cmd;
-	if (!tmp->next)
+	if (!cmd_arg[1])
 		print_export();
-	tmp = tmp->next;
-	while (tmp)
+	i = 0;
+	while (cmd_arg[++i])
 	{
-		if (check_env(tmp->str) && ft_strchr(tmp->str, '='))
+		if (!ft_isalpha(cmd_arg[i][0]))
+			print_error("not a valid identifier", 1);
+		else if (check_env(cmd_arg[i]) && ft_strchr(cmd_arg[i], '='))
 		{
-			env_tmp = check_env(tmp->str);
-			str_tmp = env_tmp->val;
-			env_tmp->val = get_val(tmp->str);
-			free(str_tmp);
+			env_tmp = check_env(cmd_arg[i]);
+			if (env_tmp->val)
+				free(env_tmp->val);
+			env_tmp->val = get_val(cmd_arg[i]);
 		}
-		else
-			add_back(tmp->str);
-		tmp = tmp->next;
+		else if (!check_env(cmd_arg[i]))
+			add_back(cmd_arg[i]);
 	}
-	return (1);
 }
 
-int	unset_env(t_line *line)
+void	unset_env(char **cmd_arg)
 {
-	t_cmd	*tmp;
 	t_env	*env_tmp;
+	int		i;
 
-	tmp = line->cmd->next;
-	while (tmp)
+	i = 0;
+	while (cmd_arg[++i])
 	{
-		env_tmp = check_env(tmp->str);
+		env_tmp = check_env(cmd_arg[i]);
 		if (env_tmp)
 			remove_env(env_tmp);
-		tmp = tmp->next;
 	}
-	return (1);
 }
