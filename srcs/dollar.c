@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 00:20:26 by wocheon           #+#    #+#             */
-/*   Updated: 2023/02/02 14:59:43 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/02 15:00:47 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ int	is_dollar(char *str)
 		while (str[i] && str[i] != '$')
 			i++;
 		if (str[i] && (ft_isalpha(str[i + 1]) \
-			|| str[i + 1] == '?' || str[i + 1] == '$'))
+			|| str[i + 1] == '?'))
 		{
 			i += 2;
 			size++;
