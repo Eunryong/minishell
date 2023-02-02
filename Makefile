@@ -6,7 +6,7 @@
 #    By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/20 22:01:20 by eunrlee           #+#    #+#              #
-#    Updated: 2023/02/01 19:42:33 by wocheon          ###   ########.fr        #
+#    Updated: 2023/02/02 12:46:15 by eunrlee          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -20,7 +20,7 @@ SRCS = ./srcs/main.c ./srcs/env_ctl.c ./srcs/environ.c ./srcs/arr.c ./srcs/excut
 	./srcs/redirection.c ./srcs/ft_cmd.c ./srcs/builtins.c ./srcs/dir.c \
 	./srcs/free.c ./srcs/heredoc.c ./srcs/error.c ./srcs/check_str.c ./srcs/signal.c \
 	./srcs/parse.c ./srcs/list.c ./srcs/check.c ./srcs/seperate_quote.c ./srcs/dollar.c \
-	./srcs/seperate_type.c ./srcs/seperate_space.c
+	./srcs/seperate_type.c ./srcs/seperate_space.c ./srcs/heredoc_utils.c
 OBJS = $(SRCS:.c=.o)
 HEADER = -I./includes
 

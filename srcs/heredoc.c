@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:55:31 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/02/01 19:41:51 by wocheon          ###   ########.fr       */
+/*   Updated: 2023/02/02 12:41:21 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,10 +29,13 @@ void	set_heredoc_file(char *limiter, char *filename)
 			break ;
 		if (!ft_strncmp(str, limiter, ft_strlen(str)))
 			break ;
+		str = here_dollar(str);
 		ft_putstr_fd(str, fd);
 		free(str);
 	}
 	close(fd);
+	if (str)
+		free(str);
 	free(limiter);
 	free(filename);
 	exit (0);
@@ -86,10 +89,11 @@ char	*check_limiter(char *rd_line, int *size)
 	return (ret);
 }
 
-int	here_utils(char *str)
+int	here_utils(char *str, char *file)
 {
 	int	status;
 
+	free(file);
 	free(str);
 	wait(&status);
 	g_env->status = WEXITSTATUS(status);
@@ -123,7 +127,7 @@ int	set_heredoc(char *rd_line)
 			file = get_filename(size++);
 			if (pid == 0)
 				set_heredoc_file(str, file);
-			if (!here_utils(str))
+			if (!here_utils(str, file))
 				return (0);
 		}
 	}

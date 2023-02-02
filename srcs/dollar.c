@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 00:20:26 by wocheon           #+#    #+#             */
-/*   Updated: 2023/01/31 04:01:01 by wocheon          ###   ########.fr       */
+/*   Updated: 2023/02/02 14:59:43 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,10 +82,7 @@ char	*trans_status(char *str, int *i)
 	int		len;
 
 	ret = ft_substr(str, 0, *i);
-	if (str[*i + 1] && str[*i + 1] == '$')
-		key = ft_itoa(getpid());
-	else
-		key = ft_itoa(g_env->status);
+	key = ft_itoa(g_env->status);
 	len = ft_strlen(key);
 	free_ret = ret;
 	ret = ft_strjoin(ret, key);
@@ -116,7 +113,7 @@ char	*change_dollar(char *str, int dollar)
 			size++;
 			ret = trans_dollar(ret, &i);
 		}
-		else if (ret[i] && (ret[i + 1] == '?' || ret[i + 1] == '$'))
+		else if (ret[i] && (ret[i + 1] == '?'))
 		{
 			size++;
 			ret = trans_status(ret, &i);

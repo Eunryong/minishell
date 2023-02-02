@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/20 20:11:36 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/02/01 19:38:01 by wocheon          ###   ########.fr       */
+/*   Updated: 2023/02/02 00:58:58 by eunrlee          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_env	*check_env(char *str);
 void	make_shlvl(char *str);
 
 int		wait_all(pid_t last_pid);
-
+char	*here_dollar(char *str);
 void	clear_cmd(t_line *line);
 
 void	print_error(char *str, int exit_code, int flag);
