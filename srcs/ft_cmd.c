@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_cmd.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:41:23 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/02/01 16:47:07 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/02 18:50:28 by wocheon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ char	*get_cmd(char **path, char *cmd)
 	char	*path_cmd;
 	char	*ret_cmd;
 	int		i;
+	int		fd;
 
 	i = -1;
 	if (access(cmd, X_OK) != -1)
@@ -27,13 +28,15 @@ char	*get_cmd(char **path, char *cmd)
 	while (path[++i])
 	{
 		ret_cmd = ft_strjoin(path[i], path_cmd);
-		if (access(ret_cmd, X_OK) != -1)
+		fd = access(ret_cmd, X_OK);
+		if (fd != -1)
 		{
 			free(path_cmd);
 			return (ret_cmd);
 		}
 		free(ret_cmd);
 	}
+	close(fd);
 	free(path_cmd);
 	return (0);
 }

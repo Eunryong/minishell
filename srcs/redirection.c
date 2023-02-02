@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe.c                                             :+:      :+:    :+:   */
+/*   redirection.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: eunrlee <eunrlee@student.42seoul.k>        +#+  +:+       +#+        */
+/*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/22 00:12:39 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/01/29 18:50:02 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/02 18:04:21 by wocheon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	set_red_front(t_cmd *cmd, int *i)
 	{
 		fd = open(cmd->next->str, O_RDONLY);
 		if (fd == -1)
-			printf(cmd->next->str, 1, 1);
+			print_error(cmd->next->str, 1, 1);
 		dup2(fd, STDIN_FILENO);
 		close(fd);
 	}
@@ -57,7 +57,7 @@ void	set_red_back(t_cmd *cmd, int *flag)
 		*flag = 1;
 		fd = open(cmd->next->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 		if (fd == -1)
-			printf(cmd->next->str, 1, 1);
+			print_error(cmd->next->str, 1, 1);
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}
@@ -66,7 +66,7 @@ void	set_red_back(t_cmd *cmd, int *flag)
 		*flag = 2;
 		fd = open(cmd->next->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 		if (fd == -1)
-			printf(cmd->next->str, 1, 1);
+			print_error(cmd->next->str, 1, 1);
 		dup2(fd, STDOUT_FILENO);
 		close(fd);
 	}

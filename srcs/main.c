@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/29 18:28:38 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/02/01 15:26:10 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/02 18:20:44 by wocheon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,6 +50,7 @@ int	input_rd(t_line line, char *rd_line)
 
 	if (!set_heredoc(rd_line))
 		return (0);
+	sig_init();
 	if (!parse(&line, rd_line))
 		return (0);
 	new = line.cmd;

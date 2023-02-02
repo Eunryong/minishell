@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/21 23:41:20 by eunrlee           #+#    #+#             */
-/*   Updated: 2023/02/01 16:49:37 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/02 19:24:11 by wocheon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,18 +61,18 @@ void	excute(t_line *line, int *fd, int i)
 	signal(SIGQUIT, SIG_DFL);
 	path = get_path();
 	cmd_arg = get_cmd_arg(line, i);
-	if (!cmd_arg || !cmd_arg[0][0])
-		cmd_error("", 127, 1);
+	if (!cmd_arg)
+		exit(0);
 	if (builtins_check(cmd_arg[0]))
 	{
 		builtins_exec(cmd_arg, line->size);
 		exit(g_env->status);
 	}
 	cmd = get_cmd(path, cmd_arg[0]);
-	if (!cmd)
+	if (!cmd || !cmd_arg[0][0])
 		cmd_error(cmd_arg[0], 127, 1);
 	if (execve(cmd, cmd_arg, env_to_arr()) == -1)
-		print_error("execve error", 126, 1);
+		cmd_error(cmd, 126, 1);
 }
 
 void	close_fd(int fd1, int fd2)

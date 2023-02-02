@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 21:23:00 by wocheon           #+#    #+#             */
-/*   Updated: 2023/02/01 16:35:43 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/02 19:12:15 by wocheon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,17 +39,19 @@ int	quote_check(char *rd_line)
 void	check_dollar(t_line *line)
 {
 	t_cmd	*cmd;
+	t_cmd	*tmp;
 
 	cmd = line->cmd;
+	tmp = 0;
 	while (cmd)
 	{
 		if (cmd->quote != 1)
 		{
 			cmd->dollar = is_dollar(cmd->str);
-			if (cmd->dollar)
+			if (cmd->dollar && tmp && tmp->type)
 			{
 				cmd->str = change_dollar(cmd->str, cmd->dollar);
-				if (!cmd->str[0] && cmd->quote == 0)
+				if (!cmd->str[0] && cmd->quote == 0 && tmp && tmp->type != 1)
 				{
 					remove_cmd(line, &cmd);
 					if (!line->cmd)
@@ -57,6 +59,7 @@ void	check_dollar(t_line *line)
 				}
 			}
 		}
+		tmp = cmd;
 		cmd = cmd->next;
 	}
 }
@@ -81,7 +84,7 @@ int	check_error(t_line *line)
 	t_cmd	*cmd;
 
 	cmd = line->cmd;
-	if (cmd->type == pip)
+	if (cmd && cmd->type == pip)
 		return (0);
 	while (cmd)
 	{

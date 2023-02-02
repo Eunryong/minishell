@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/31 13:42:45 by wocheon           #+#    #+#             */
-/*   Updated: 2023/01/31 15:32:25 by wocheon          ###   ########.fr       */
+/*   Updated: 2023/02/02 19:05:27 by wocheon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ typedef struct s_cmd
 	int				status;
 	int				pipe;
 	int				space;
+	int				heredoc;
 	struct s_cmd	*next;
 }	t_cmd;
 

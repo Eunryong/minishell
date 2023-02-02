@@ -6,12 +6,12 @@
 #    By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2023/01/20 22:01:20 by eunrlee           #+#    #+#              #
-#    Updated: 2023/02/02 12:46:15 by eunrlee          ###   ########.fr        #
+#    Updated: 2023/02/02 18:21:39 by wocheon          ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
 CC = cc
-CFLAGS = -Werror -Wall -Wextra
+CFLAGS = -Werror -Wall -Wextra #-g
 RL_LIB = -lreadline -L$(HOME)/.brew/opt/readline/lib
 RL_INC = -I$(HOME)/.brew/opt/readline/include
 NAME = minishell

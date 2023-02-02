@@ -6,7 +6,7 @@
 /*   By: wocheon <wocheon@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/30 21:20:22 by wocheon           #+#    #+#             */
-/*   Updated: 2023/02/01 18:30:58 by eunrlee          ###   ########.fr       */
+/*   Updated: 2023/02/02 19:05:36 by wocheon          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ t_cmd	*new_cmd(void)
 	new->status = g_env->status;
 	new->quote = 0;
 	new->space = 0;
+	new->heredoc = 0;
 	new->next = NULL;
 	return (new);
 }
