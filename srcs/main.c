@@ -60,7 +60,7 @@ int	input_rd(t_line line, char *rd_line)
 			line.size++;
 		new = new->next;
 	}
-	if (line.syntax || set_excute(&line) == -2)
+	if (line.syntax || set_execute(&line) == -2)
 	{
 		g_env->status = 1;
 		clear_cmd(&line);

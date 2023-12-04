@@ -68,7 +68,7 @@ void	backup_fd(t_line *line);
 
 char	**get_cmd_arg(t_line *line, int size);
 char	*get_cmd(char **path, char *cmd);
-int		set_excute(t_line *line);
+int		set_execute(t_line *line);
 void	get_io(t_line *line, int *fd, int i);
 t_cmd	*get_pipe(t_line *line, int size);
 

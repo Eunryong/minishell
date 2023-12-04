@@ -50,7 +50,7 @@ char	**get_path(void)
 	return (ft_split(tmp->val, ':'));
 }
 
-void	excute(t_line *line, int *fd, int i)
+void	execute(t_line *line, int *fd, int i)
 {
 	char	**cmd_arg;
 	char	*cmd;
@@ -81,7 +81,7 @@ void	close_fd(int fd1, int fd2)
 	close(fd2);
 }
 
-int	set_excute(t_line *line)
+int	set_execute(t_line *line)
 {
 	pid_t	pid;
 	int		fd[2];
@@ -100,7 +100,7 @@ int	set_excute(t_line *line)
 		if (pid == -1)
 			print_error("fork error", 1, 1);
 		if (pid == 0)
-			excute(line, fd, i);
+			execute(line, fd, i);
 		dup2(fd[0], STDIN_FILENO);
 		close_fd(fd[0], fd[1]);
 	}

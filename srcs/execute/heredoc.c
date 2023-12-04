@@ -68,7 +68,6 @@ char	*get_ret(char *rd_line, int idx, int *i, int quote)
 
 char	*check_limiter(char *rd_line, int *size)
 {
-	int		i;
 	int		j;
 	int		start;
 	char	*ret;
@@ -80,7 +79,6 @@ char	*check_limiter(char *rd_line, int *size)
 	if (!rd_line[start] || check_type(rd_line, start))
 		return (0);
 	j = 0;
-	i = start;
 	j = lmt_size(rd_line, start, &quote);
 	if (quote < 0)
 		return (0);
