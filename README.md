@@ -103,6 +103,30 @@ signal함수를 통해 Ctrl + c, Ctrl + d, Ctrl + \를 관리해준다.
 
 자식 프로세스의 종료코드를 wait함수를 통해 받아준다.
 
+```c
+int	wait_all(pid_t last_pid)
+{
+	int		temp;
+	pid_t	pid;
+
+	pid = 1;
+	while (pid != -1)
+	{
+		pid = wait(&temp);
+		if (pid == last_pid)
+		{
+			if (WIFEXITED(temp))
+				g_env->status = WEXITSTATUS(temp);
+			else if (WIFSIGNALED(temp))
+				g_env->status = WTERMSIG(temp) + 128;
+			if (g_env->status == 131)
+				ft_putstr_fd("Quit: 3\n", 2);
+		}
+	}
+	return (1);
+}
+```
+
 ## 에러메세지
 
 빌트인을 제외한 명령어들은 execve를 통해 실행하기 때문에 strerror함수를 통해 처리 할수 있지만
